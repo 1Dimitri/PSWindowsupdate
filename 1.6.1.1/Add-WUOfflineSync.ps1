@@ -44,6 +44,8 @@ Function Add-WUOfflineSync
 	.NOTES
 		Author: Michal Gajda
 		Blog  : http://commandlinegeeks.com/
+		Author: Dimitri Janczak
+		Blog: https://dimitri.janczak.net
 		
 	.LINK
 		http://gallery.technet.microsoft.com/scriptcenter/2d191bcd-3308-4edd-9de2-88dff796b0bc
@@ -90,6 +92,10 @@ Function Add-WUOfflineSync
 			Return
 		} #End If -not (Test-Path $Path)
 		
+		If (Get-ItemProperty $Path -Name IsReadOnly) {
+		       Write-Error "The $Path package file is read-only which may create issue if on a read-only medium (optical disc,...). Please Change its attribute."
+
+		}
 		If($Name -eq $null)
 		{
 			$Name = $DefaultName
@@ -110,7 +116,7 @@ Function Add-WUOfflineSync
         {
             If($_ -match "HRESULT: 0x80070005")
             {
-                Write-Warning "Your security policy don't allow a non-administator identity to perform this task"
+                Write-Warning "Your security policy don't allow a non-administrator identity to perform this task or the cab file is read-only"
             } #End If $_ -match "HRESULT: 0x80070005"
 			Else
 			{
