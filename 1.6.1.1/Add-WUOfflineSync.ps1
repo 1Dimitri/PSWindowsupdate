@@ -92,8 +92,9 @@ Function Add-WUOfflineSync
 			Return
 		} #End If -not (Test-Path $Path)
 		
-		If (Get-ItemProperty $Path -Name IsReadOnly) {
+		If ((Get-ItemProperty $Path -Name IsReadOnly) -eq $true) {
 		       Write-Error "The $Path package file is read-only which may create issue if on a read-only medium (optical disc,...). Please Change its attribute."
+			   return
 
 		}
 		If($Name -eq $null)
